@@ -1,4 +1,4 @@
-# this is just a test
+# this is just a test2
 
 import numpy as np
 import scr.StatisticalClasses as Stat
