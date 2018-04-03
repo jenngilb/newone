@@ -191,21 +191,22 @@ SupportSS.print_comparative_outcomes(noTrickCoinOutcome, withTrickCoinOutcome)
 #Hmwk Q2 Transient State
 
 # create multiple cohorts for when no trick coin is used
-multiCohortNoTrickCoin = MultipleGameSets(
+multiCohortNoTrickCoin = Cls.MultiCohort(
     ids=range(NUM_SIM_COHORTS),   # [0, 1, 2 ..., NUM_SIM_COHORTS-1]
-    n_games_in_a_set=[REAL_POP_SIZE] * NUM_SIM_COHORTS,  # [REAL_POP_SIZE, REAL_POP_SIZE, ..., REAL_POP_SIZE]
-    prob_head=[HEADS_PROBABILITY]*NUM_SIM_COHORTS  # [p, p, ...]
+    pop_sizes=[REAL_POP_SIZE] * NUM_SIM_COHORTS,  # [REAL_POP_SIZE, REAL_POP_SIZE, ..., REAL_POP_SIZE]
+    mortality_probs=[HEADS_PROBABILITY]*NUM_SIM_COHORTS  # [p, p, ...]
 )
 # simulate all cohorts
-multiCohortNoTrickCoin.simulation(TIME_STEPS)
+multiCohortNoTrickCoin.simulate(TIME_STEPS)
 
 # create multiple cohorts for when trick coin is used
-multiCohortTrickCoin = MultipleGameSets(
-    n_games_in_a_set=[REAL_POP_SIZE] * NUM_SIM_COHORTS,  # [REAL_POP_SIZE, REAL_POP_SIZE, ..., REAL_POP_SIZE]
-    prob_head=[HEADS_PROBABILITY*COIN_EFFECT_RATIO]*NUM_SIM_COHORTS
+multiCohortTrickCoin = Cls.MultiCohort(
+   ids=range(NUM_SIM_COHORTS, 2*NUM_SIM_COHORTS),   # [NUM_SIM_COHORTS, NUM_SIM_COHORTS+1, NUM_SIM_COHORTS+2, ...]
+    pop_sizes=[REAL_POP_SIZE] * NUM_SIM_COHORTS,  # [REAL_POP_SIZE, REAL_POP_SIZE, ..., REAL_POP_SIZE]
+    mortality_probs=[HEADS_PROBABILITY]*NUM_SIM_COHORTS
 )
 # simulate all cohorts
-multiCohortTrickCoin.simulation(TIME_STEPS)
+multiCohortTrickCoin.simulate(TIME_STEPS)
 
 # print outcomes of each cohort
 SupportTS.print_outcomes(multiCohortNoTrickCoin, 'Hmwk Q2: When not using a trick coin, the gambler will find:')
