@@ -155,7 +155,8 @@ class MultipleGameSets:
 #Use steady state for Q1 and transient state for Q2
 #Hmwk Q1
 
-HEADS_PROBABILITY = 0.45
+TRICKHEADS_PROBABILITY = 0.45
+TRUEHEADS_PROBABILITY = 0.5
 TAILS_PROBABILITY = 0.55
 TIME_STEPS = 20
 ALPHA = 0.05
@@ -168,7 +169,7 @@ NUM_SIM_COHORTS = 1000  # number of simulated cohorts used for making projection
 cohortNoTrickCoin = Cls.Cohort(
     id=1,
     pop_size=SIM_POP_SIZE,
-    mortality_prob=HEADS_PROBABILITY)
+    mortality_prob=TRUEHEADS_PROBABILITY)
 # simulate the cohort
 noTrickCoinOutcome = cohortNoTrickCoin.simulate(TIME_STEPS)
 
@@ -176,7 +177,7 @@ noTrickCoinOutcome = cohortNoTrickCoin.simulate(TIME_STEPS)
 cohortTrickCoin = Cls.Cohort(
     id=2,
     pop_size=SIM_POP_SIZE,
-    mortality_prob=HEADS_PROBABILITY)
+    mortality_prob=TRICKHEADS_PROBABILITY)
 # simulate the cohort
 withTrickCoinOutcome = cohortTrickCoin.simulate(TIME_STEPS)
 
@@ -194,7 +195,7 @@ SupportSS.print_comparative_outcomes(noTrickCoinOutcome, withTrickCoinOutcome)
 multiCohortNoTrickCoin = Cls.MultiCohort(
     ids=range(NUM_SIM_COHORTS),   # [0, 1, 2 ..., NUM_SIM_COHORTS-1]
     pop_sizes=[REAL_POP_SIZE] * NUM_SIM_COHORTS,  # [REAL_POP_SIZE, REAL_POP_SIZE, ..., REAL_POP_SIZE]
-    mortality_probs=[HEADS_PROBABILITY]*NUM_SIM_COHORTS  # [p, p, ...]
+    mortality_probs=[TRUEHEADS_PROBABILITY]*NUM_SIM_COHORTS  # [p, p, ...]
 )
 # simulate all cohorts
 multiCohortNoTrickCoin.simulate(TIME_STEPS)
@@ -203,7 +204,7 @@ multiCohortNoTrickCoin.simulate(TIME_STEPS)
 multiCohortTrickCoin = Cls.MultiCohort(
    ids=range(NUM_SIM_COHORTS, 2*NUM_SIM_COHORTS),   # [NUM_SIM_COHORTS, NUM_SIM_COHORTS+1, NUM_SIM_COHORTS+2, ...]
     pop_sizes=[REAL_POP_SIZE] * NUM_SIM_COHORTS,  # [REAL_POP_SIZE, REAL_POP_SIZE, ..., REAL_POP_SIZE]
-    mortality_probs=[HEADS_PROBABILITY]*NUM_SIM_COHORTS
+    mortality_probs=[TRICKHEADS_PROBABILITY]*NUM_SIM_COHORTS
 )
 # simulate all cohorts
 multiCohortTrickCoin.simulate(TIME_STEPS)
