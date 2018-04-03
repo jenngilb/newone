@@ -19,7 +19,7 @@ def print_outcomes(multi_cohort, strategy_name):
 
     # print survival time statistics
     print(strategy_name)
-    print("  Estimate of mean survival time (years) and {:.{prec}%} prediction interval:".format(1 - P.ALPHA, prec=0),
+    print("  Estimate of the change in reward and {:.{prec}%} prediction interval:".format(1 - P.ALPHA, prec=0),
           survival_mean_PI_text)
 
 
@@ -56,7 +56,7 @@ def print_comparative_outcomes(multiCohortNoTrickCoin, multiCohortTrickCoin):
 
     # increase in survival time
     increase = Stat.DifferenceStatIndp(
-        name='Increase in mean survival time',
+        name='Increase in mean change in reward',
         x=multiCohortTrickCoin.get_all_mean_survival(),
         y_ref=multiCohortNoTrickCoin.get_all_mean_survival()
     )
@@ -66,12 +66,12 @@ def print_comparative_outcomes(multiCohortNoTrickCoin, multiCohortTrickCoin):
         interval=increase.get_PI(alpha=P.ALPHA),
         deci=1
     )
-    print("Expected increase in mean survival time (years) and {:.{prec}%} prediction interval:".format(1 - P.ALPHA, prec=0),
+    print("Expected increase in mean change of reward and {:.{prec}%} prediction interval:".format(1 - P.ALPHA, prec=0),
           estimate_CI)
 
     # % increase in mean survival time
     relative_diff = Stat.RelativeDifferenceIndp(
-        name='% increase in mean survival time',
+        name='% increase in mean change in reward',
         x=multiCohortTrickCoin.get_all_mean_survival(),
         y_ref=multiCohortNoTrickCoin.get_all_mean_survival()
     )
@@ -82,5 +82,5 @@ def print_comparative_outcomes(multiCohortNoTrickCoin, multiCohortTrickCoin):
         deci=1,
         form=Format.FormatNumber.PERCENTAGE
     )
-    print("Expected percentage increase in mean survival time and {:.{prec}%} confidence interval:".format(1 - ALPHA, prec=0),
+    print("Expected percentage increase in mean change in reward and {:.{prec}%} confidence interval:".format(1 - ALPHA, prec=0),
           estimate_CI)

@@ -80,12 +80,12 @@ def print_comparative_outcomes(sim_output_no_drug, sim_output_with_drug):
         interval=increase.get_t_CI(alpha=P.ALPHA),
         deci=1
     )
-    print("Average increase in survival time (years) and {:.{prec}%} confidence interval:".format(1 - P.ALPHA, prec=0),
+    print("Average increase in change in reward and {:.{prec}%} confidence interval:".format(1 - P.ALPHA, prec=0),
           estimate_CI)
 
     # % increase in survival time
     relative_diff = Stat.RelativeDifferenceIndp(
-        name='Average % increase in survival time',
+        name='Average % increase in reward',
         x=sim_output_with_drug.get_survival_times(),
         y_ref=sim_output_no_drug.get_survival_times()
     )
@@ -96,5 +96,5 @@ def print_comparative_outcomes(sim_output_no_drug, sim_output_with_drug):
         deci=1,
         form=Format.FormatNumber.PERCENTAGE
     )
-    print("Average percentage increase in survival time and {:.{prec}%} confidence interval:".format(1 - P.ALPHA, prec=0),
+    print("Average percentage increase in change of reward and {:.{prec}%} confidence interval:".format(1 - P.ALPHA, prec=0),
           estimate_CI)
