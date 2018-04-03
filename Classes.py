@@ -181,8 +181,8 @@ cohortTrickCoin = Cls.Cohort(
 withTrickCoinOutcome = cohortTrickCoin.simulate(TIME_STEPS)
 
 # print outcomes of each cohort
-SupportSS.print_outcomes(noTrickCoinOutcome, 'Hmwk Q1: When trick coin is not available:')
-SupportSS.print_outcomes(withTrickCoinOutcome, 'When trick coin is available:')
+SupportSS.print_outcomes(noTrickCoinOutcome, 'Hmwk Q1: When the trick coin is not available, the casino owner will find:')
+SupportSS.print_outcomes(withTrickCoinOutcome, 'When trick coin is available, the casino owner will find:')
 
 # print comparative outcomes
 SupportSS.print_comparative_outcomes(noTrickCoinOutcome, withTrickCoinOutcome)
