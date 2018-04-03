@@ -1,9 +1,8 @@
-# this is just a test2
-
 import numpy as np
 import scr.StatisticalClasses as Stat
 import SupportSteadyState as SupportSS
 import SupportTransientState as SupportTS
+import SurvivalModelClasses as Cls
 
 class Game:
     def __init__(self, id, prob_head):
@@ -166,23 +165,23 @@ SIM_POP_SIZE = 10
 REAL_POP_SIZE = 10     # size of the real cohort to make the projections for
 NUM_SIM_COHORTS = 1000  # number of simulated cohorts used for making projections
 
-cohortNoTrickCoin = SetOfGames(
+cohortNoTrickCoin = Cls.Cohort(
     id=1,
-    n_games=SIM_POP_SIZE,
-    prob_head=HEADS_PROBABILITY)
+    pop_size=SIM_POP_SIZE,
+    mortality_prob=HEADS_PROBABILITY)
 # simulate the cohort
-noTrickCoinOutcome = cohortNoTrickCoin._prob_loss(TIME_STEPS)
+noTrickCoinOutcome = cohortNoTrickCoin.simulate(TIME_STEPS)
 
 # create a cohort of patients for when the drug is available
-cohortTrickCoin = SetOfGames(
+cohortTrickCoin = Cls.Cohort(
     id=2,
-    n_games=SIM_POP_SIZE,
-    prob_head=HEADS_PROBABILITY)
+    pop_size=SIM_POP_SIZE,
+    mortality_prob=HEADS_PROBABILITY)
 # simulate the cohort
-withTrickCoinOutcome = cohortTrickCoin._prob_loss(TIME_STEPS)
+withTrickCoinOutcome = cohortTrickCoin.simulate(TIME_STEPS)
 
 # print outcomes of each cohort
-SupportSS.print_outcomes(noTrickCoinOutcome, 'When trick coin is not available:')
+SupportSS.print_outcomes(noTrickCoinOutcome, 'Hmwk Q1: When trick coin is not available:')
 SupportSS.print_outcomes(withTrickCoinOutcome, 'When trick coin is available:')
 
 # print comparative outcomes
@@ -209,7 +208,7 @@ multiCohortTrickCoin = MultipleGameSets(
 multiCohortTrickCoin.simulation(TIME_STEPS)
 
 # print outcomes of each cohort
-SupportTS.print_outcomes(multiCohortNoTrickCoin, 'When not using a trick coin, the gambler will find:')
+SupportTS.print_outcomes(multiCohortNoTrickCoin, 'Hmwk Q2: When not using a trick coin, the gambler will find:')
 SupportTS.print_outcomes(multiCohortTrickCoin, 'When using a trick coin, the gambler will find:')
 
 
