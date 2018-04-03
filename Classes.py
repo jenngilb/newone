@@ -155,13 +155,16 @@ class MultipleGameSets:
 #Use steady state for Q1 and transient state for Q2
 #Hmwk Q1
 
+#parameters
 TRICKHEADS_PROBABILITY = 0.45
 TRUEHEADS_PROBABILITY = 0.5
 TIME_STEPS = 20
 ALPHA = 0.05
 
-# settings for transient-state simulation
+#settings for steady-state simulation
 SIM_POP_SIZE = 10
+
+# settings for transient-state simulation
 REAL_POP_SIZE = 10     # size of the real cohort to make the projections for
 NUM_SIM_COHORTS = 1000  # number of simulated cohorts used for making projections
 
