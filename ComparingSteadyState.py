@@ -23,7 +23,7 @@ print("Hmwk Q1")
 
 # print outcomes of each cohort
 Support.print_outcomes(FairOutcome, 'When you use the fair coin:')
-Support.print_outcomes(withUnfiarCoinOutcome, 'When us the trick coin:')
+Support.print_outcomes(withUnfiarCoinOutcome, 'When use the trick coin:')
 
 # print comparative outcomes
 Support.print_comparative_outcomes(FairOutcome, withUnfiarCoinOutcome)
