@@ -1,8 +1,5 @@
 import numpy as np
 import scr.StatisticalClasses as Stat
-import SupportSteadyState as SupportSS
-import SupportTransientState as SupportTS
-import SurvivalModelClasses as Cls
 
 class Game:
     def __init__(self, id, prob_head):
@@ -32,7 +29,6 @@ class Game:
     def get_reward(self):
         # calculate the reward from playing a single game
         return 100*self._countWins - 250
-
 
 class SetOfGames:
     def __init__(self, id, prob_head, n_games):
@@ -70,7 +66,6 @@ class SetOfGames:
     # return vector of losses
     def get_loss_list(self):
         return self._countLoss_list
-
 
 class SetOfGamesOutcomes:
     def __init__(self, set_of_games):
@@ -116,7 +111,6 @@ class SetOfGamesOutcomes:
     def get_CI_probLoss(self, alpha):
         return self._sumStat_gameProbLoss.get_t_CI(alpha)
 
-
 class MultipleGameSets:
     """ representing multiple sets of games (for the analysis from the gambler's perspective """
     def __init__(self, ids, prob_head, n_games_in_a_set):
@@ -125,19 +119,23 @@ class MultipleGameSets:
         self._n_games_in_a_set = n_games_in_a_set  # number of games in each set
 
         self._totalRewards = [] # create an empty list where rewards will be stored
+        self._meanRewards = [] # create an empty list where average rewards will be stored
         self._sumStat_totalRewards = None
 
     def simulation(self):
-        for i in self._ids:
+        for i in range(len(self._ids)):
             # create a new set of games
-            set_of_games = SetOfGames(i, self._probs_head, self._n_games_in_a_set)
+            set_of_games = SetOfGames(self._ids[i], self._probs_head [i], self._n_games_in_a_set[i])
             # simulate the set of games using 20 flips
             outcomes = set_of_games.simulation()
             # store the total reward from this game set
             self._totalRewards.append(outcomes.get_total_reward())
+            self._meanRewards.append(outcomes.get_ave_reward())
 
         # summary statistics of total rewards
         self._sumStat_totalRewards = Stat.SummaryStat("Mean Rewards", self._totalRewards)
+        # summary statistics of average of the avergae rewards
+        self._sumStat_meanRewards = Stat.SummaryStat("Mean Rewards", self._meanRewards)
 
     # get the mean of total rewards
     def get_mean_total_reward(self):
@@ -147,74 +145,17 @@ class MultipleGameSets:
     def get_PI_total_reward(self, alpha):
         return self._sumStat_totalRewards.get_PI(alpha)
 
+    def get_mean_Rewards(self):
+        return self._meanRewards
+
+    # get the mean of total rewards
+    def get_mean_mean_reward(self):
+        return self._sumStat_meanRewards.get_mean()
+
+    # get prediction interval for total reward
+    def get_PI_mean_reward(self, alpha):
+        return self._sumStat_meanRewards.get_PI(alpha)
+
     # get all total rewards
     def get_all_total_rewards(self):
         return self._totalRewards
-
-#Hmwk Q1-2
-#Use steady state for Q1 and transient state for Q2
-#Hmwk Q1
-
-#parameters
-TRICKHEADS_PROBABILITY = 0.45
-TRUEHEADS_PROBABILITY = 0.5
-TIME_STEPS = 20
-ALPHA = 0.05
-
-#settings for steady-state simulation
-SIM_POP_SIZE = 10
-
-# settings for transient-state simulation
-REAL_POP_SIZE = 10     # size of the real cohort to make the projections for
-NUM_SIM_COHORTS = 1000  # number of simulated cohorts used for making projections
-
-cohortNoTrickCoin = Cls.Cohort(
-    id=1,
-    pop_size=SIM_POP_SIZE,
-    mortality_prob=TRUEHEADS_PROBABILITY)
-# simulate the cohort
-noTrickCoinOutcome = cohortNoTrickCoin.simulate(TIME_STEPS)
-
-# create a cohort of patients for when the drug is available
-cohortTrickCoin = Cls.Cohort(
-    id=2,
-    pop_size=SIM_POP_SIZE,
-    mortality_prob=TRICKHEADS_PROBABILITY)
-# simulate the cohort
-withTrickCoinOutcome = cohortTrickCoin.simulate(TIME_STEPS)
-
-# print outcomes of each cohort
-SupportSS.print_outcomes(noTrickCoinOutcome, 'Hmwk Q1: When the trick coin is not available, the casino owner will find:')
-SupportSS.print_outcomes(withTrickCoinOutcome, 'When trick coin is available, the casino owner will find:')
-
-# print comparative outcomes
-SupportSS.print_comparative_outcomes(noTrickCoinOutcome, withTrickCoinOutcome)
-
-
-#Hmwk Q2 Transient State
-
-# create multiple cohorts for when no trick coin is used
-multiCohortNoTrickCoin = Cls.MultiCohort(
-    ids=range(NUM_SIM_COHORTS),   # [0, 1, 2 ..., NUM_SIM_COHORTS-1]
-    pop_sizes=[REAL_POP_SIZE] * NUM_SIM_COHORTS,  # [REAL_POP_SIZE, REAL_POP_SIZE, ..., REAL_POP_SIZE]
-    mortality_probs=[TRUEHEADS_PROBABILITY]*NUM_SIM_COHORTS  # [p, p, ...]
-)
-# simulate all cohorts
-multiCohortNoTrickCoin.simulate(TIME_STEPS)
-
-# create multiple cohorts for when trick coin is used
-multiCohortTrickCoin = Cls.MultiCohort(
-   ids=range(NUM_SIM_COHORTS, 2*NUM_SIM_COHORTS),   # [NUM_SIM_COHORTS, NUM_SIM_COHORTS+1, NUM_SIM_COHORTS+2, ...]
-    pop_sizes=[REAL_POP_SIZE] * NUM_SIM_COHORTS,  # [REAL_POP_SIZE, REAL_POP_SIZE, ..., REAL_POP_SIZE]
-    mortality_probs=[TRICKHEADS_PROBABILITY]*NUM_SIM_COHORTS
-)
-# simulate all cohorts
-multiCohortTrickCoin.simulate(TIME_STEPS)
-
-# print outcomes of each cohort
-SupportTS.print_outcomes(multiCohortNoTrickCoin, 'Hmwk Q2: When not using a trick coin, the gambler will find:')
-SupportTS.print_outcomes(multiCohortTrickCoin, 'When using a trick coin, the gambler will find:')
-
-
-# print comparative outcomes
-SupportTS.print_comparative_outcomes(multiCohortNoTrickCoin, multiCohortTrickCoin)
